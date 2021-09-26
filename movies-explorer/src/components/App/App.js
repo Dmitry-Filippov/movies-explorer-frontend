@@ -9,6 +9,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
+import Preloader from "../Preloader/Preloader"
 
 function App() {
   const [isBurgerMenuOpened, setBurgerMenuOpen] = React.useState(false);
@@ -41,6 +42,9 @@ function App() {
         </Route>
         <Route path="/signin">
           <Login />
+        </Route>
+        <Route path="/preloader">
+          <Preloader />
         </Route>
         <Route path="*">
           <NotFound />
