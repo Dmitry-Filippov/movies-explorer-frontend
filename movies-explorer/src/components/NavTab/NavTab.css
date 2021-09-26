@@ -1,0 +1,37 @@
+.navtab {
+  margin: 0 auto;
+  width: fit-content;
+  padding: 151px 0 30px 0;
+}
+
+.navtab__link {
+	display: inline-block;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #fff;
+	text-decoration: none;
+	text-align: center;
+	padding: 10px 23px;
+	background-color: #303030;
+	border-radius: 10px;
+	margin-left: 10px;
+}
+
+.navtab__link:first-of-type {
+	margin: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .navtab {
+    padding: 314px 0 30px 0;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .navtab {
+    padding: 212px 0 17px 0;
+  }
+}

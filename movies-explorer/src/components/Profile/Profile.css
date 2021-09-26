@@ -1,0 +1,94 @@
+.profile {
+  min-height: 100vh;
+}
+
+.profile__greating {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  color: #fff;
+  margin: 0;
+  padding: 74px 0 0 0;
+}
+
+.profile__text-line {
+  width: 410px;
+  margin: 0 auto;
+  padding: 123px 0 16px 0;
+  border-bottom: 1px solid #424242;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile__text-line_email {
+  padding: 17px 0 0 0;
+  border-bottom: none;
+}
+
+.profile__text {
+  display: inline-block;
+  margin: 0;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #fff;
+}
+
+.profile__edit-button {
+  padding: 220px 0 0 0;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #fff;
+  background: none;
+  border: none;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.profile__exit-button {
+  padding: 16px 0 0 0;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  color: #ee3465;
+  background: none;
+  border: none;
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+  .profile__greating {
+    padding-top: 236px;
+  }
+  
+}
+
+@media screen and (max-width: 500px) {
+  .profile__greating {
+    padding-top: 70px;
+  }
+
+  .profile__text-line {
+    padding-top: 80px;
+    max-width: 80%;
+  }
+
+  .profile__text-line_email {
+    padding-top: 17px;
+  }
+}
