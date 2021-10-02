@@ -3,7 +3,7 @@
 }
 
 .profile__greating {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
@@ -41,7 +41,7 @@
 
 .profile__edit-button {
   padding: 220px 0 0 0;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 13px;
@@ -57,7 +57,7 @@
 
 .profile__exit-button {
   padding: 16px 0 0 0;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 13px;
@@ -75,7 +75,6 @@
   .profile__greating {
     padding-top: 236px;
   }
-  
 }
 
 @media screen and (max-width: 500px) {

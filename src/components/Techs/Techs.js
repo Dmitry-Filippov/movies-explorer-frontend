@@ -32,7 +32,7 @@ function Techs() {
           <p className="techs__grid-text">mongoDB</p>
         </div>
       </div> 
-    </section>
+    </section> 
   );
 }
 

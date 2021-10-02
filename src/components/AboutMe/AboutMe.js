@@ -19,37 +19,56 @@ function AboutMe() {
           </p>
           <ul className="about-me__nav">
             <li className="about-me__link">
-              <a href="#">Facebook</a>
+              <a
+                href="https://www.facebook.com/profile.php?id=100012803493100"
+                target="blank"
+              >
+                Facebook
+              </a>
             </li>
             <li className="about-me__link">
-              <a href="#">Github</a>
+              <a href="https://github.com/Dmitry-Filippov" target="blank">
+                Github
+              </a>
             </li>
           </ul>
         </div>
         <img
           className="about-me__photo"
           src="https://sun9-28.userapi.com/impf/c846323/v846323525/81e40/Ryh39UMEv6k.jpg?size=720x960&quality=96&sign=ce1755e887ff4916b0383bdff5bfb901&type=album"
-          alt="photo"
+          alt="my avatar"
         />
       </div>
       <h3 className="about-me__portfolio">Портфолио</h3>
       <ul className="about-me__portfolio-nav">
         <li className="about-me__navlink">
           <p>Статичный сайт</p>
-          <a className="about-me__linkimg" href="#">
-            <img src={arrowImg} alt="" />
+          <a
+            className="about-me__linkimg"
+            href="http://filippov-diploma.nomoredomains.club"
+            target="blank"
+          >
+            <img src={arrowImg} alt="arrow" />
           </a>
         </li>
         <li className="about-me__navlink">
           <p>Адаптивный сайт</p>
-          <a className="about-me__linkimg" href="#">
-            <img src={arrowImg} alt="" />
+          <a
+            className="about-me__linkimg"
+            href="http://filippov-diploma.nomoredomains.club"
+            target="blank"
+          >
+            <img src={arrowImg} alt="arrow" />
           </a>
         </li>
         <li className="about-me__navlink">
           <p>Одностраничное приложение</p>
-          <a className="about-me__linkimg" href="#">
-            <img src={arrowImg} alt="" />
+          <a
+            className="about-me__linkimg"
+            href="http://filippov-diploma.nomoredomains.club"
+            target="blank"
+          >
+            <img src={arrowImg} alt="arrow" />
           </a>
         </li>
       </ul>

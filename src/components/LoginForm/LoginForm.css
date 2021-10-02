@@ -3,7 +3,7 @@
 }
 
 .login-form__span {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 10px;
@@ -42,7 +42,7 @@
   border-radius: 3px;
   border: none;
   padding: 15px 0;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;

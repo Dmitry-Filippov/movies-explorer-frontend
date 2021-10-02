@@ -5,7 +5,7 @@
 }
 
 .about-me__title {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 22px;
@@ -25,7 +25,7 @@
 }
 
 .about-me__student-name {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 50px;
@@ -38,7 +38,7 @@
 .about-me__subtitle {
   padding-top: 18px;
   margin: 0;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -50,7 +50,7 @@
 .about-me__text {
   padding-top: 26px;
   margin: 0;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -67,7 +67,7 @@
 }
 
 .about-me__link a {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -83,7 +83,7 @@
 }
 
 .about-me__portfolio {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -119,7 +119,7 @@
 .about-me__navlink p {
   padding: 0;
   margin: 0;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 30px;

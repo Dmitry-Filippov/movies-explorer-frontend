@@ -12,9 +12,9 @@ function SavedMovies({handleBurgerMenuClick}) {
       <HeaderBurg handleBurgerMenuClick={handleBurgerMenuClick} />
       <SearchForm />
       <MoviesCardList>
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
+        <MoviesCard buttonClass = "movies-card__button_del" buttonText=""/>
+        <MoviesCard buttonClass = "movies-card__button_del" buttonText=""/>
+        <MoviesCard buttonClass = "movies-card__button_del" buttonText=""/>
       </MoviesCardList>
       <div style={{minHeight: '140px'}}></div>
       <Footer />

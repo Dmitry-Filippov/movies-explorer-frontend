@@ -1,5 +1,5 @@
 .header-alt__films {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 13px;
@@ -12,7 +12,7 @@
 }
 
 .header-alt__saved {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 13px;

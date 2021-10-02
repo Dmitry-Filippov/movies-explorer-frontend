@@ -13,10 +13,10 @@ function Movies({handleBurgerMenuClick}) {
       <HeaderBurg handleBurgerMenuClick={handleBurgerMenuClick} />
       <SearchForm />
       <MoviesCardList>
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
+        <MoviesCard buttonClass = "movies-card__button" buttonText="Сохранить"/>
+        <MoviesCard buttonClass = "movies-card__button_saved" buttonText=""/>
+        <MoviesCard buttonClass = "movies-card__button_saved" buttonText=""/>
+        <MoviesCard buttonClass = "movies-card__button" buttonText="Сохранить"/>
       </MoviesCardList>
       <MoreButton />
       <Footer />
