@@ -1,0 +1,52 @@
+.register {
+  min-height: 100vh;
+  width: 30%;
+  margin: 0 auto;
+}
+
+.register__container {
+  padding-top: 16px;
+  padding-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.register__text {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #8b8b8b;
+  padding-right: 6px;
+}
+
+.register__link {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #4285f4;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .register {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .register {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .register {
+    width: 80%;
+  }
+}

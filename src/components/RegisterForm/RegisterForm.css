@@ -1,0 +1,66 @@
+.register-form {
+  padding-top: 40px;
+}
+
+.register-form__input {
+  width: 100%;
+  background: #2f2f2f;
+  border-radius: 8px;
+  border: none;
+  padding: 15px;
+  margin-top: 10px;
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 16px;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.register-form__input_type_name {
+  text-transform: capitalize;
+}
+
+.register-form__input_type_password {
+  color: #ee3465;
+}
+
+.register-form__span {
+  display: inline-block;
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #8b8b8b;
+  padding-top: 20px;
+  margin: 0;
+}
+
+.register-form__span:first-of-type {
+  padding-top: 0;
+}
+
+.register-form__span_type_err {
+  padding-top: 10px;
+  color: #ee3465;
+}
+
+.register-form__submit {
+  width: 100%;
+  padding: 14px 0;
+  text-align: center;
+  background: #4285f4;
+  border-radius: 3px;
+  border: none;
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #fff;
+	margin-top: 69px;
+	cursor: pointer;
+}

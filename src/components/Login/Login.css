@@ -1,0 +1,52 @@
+.login {
+  min-height: 100vh;
+  width: 30%;
+  margin: 0 auto;
+}
+
+.login__container {
+  padding-top: 16px;
+  padding-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.login__text {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #8b8b8b;
+  padding-right: 6px;
+}
+
+.login__link {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #4285f4;
+	text-decoration: none;
+}
+
+@media screen and (max-width: 1024px) {
+  .login {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .login {
+    width: 80%;
+  }
+}
