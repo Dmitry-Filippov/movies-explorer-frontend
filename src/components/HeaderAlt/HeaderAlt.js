@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import '../Header/Header.css';
 import './HeaderAlt.css'
 
@@ -6,10 +7,10 @@ function HeaderAlt() {
     <header className="header header-alt">
       <div className="header__logo"></div>
       <div className="header-alt__wrapper">
-        <button className="header-alt__films">Фильмы</button>
-        <button className="header-alt__saved">Сохранённые фильмы</button>
+        <Link className="header-alt__films" to="/movies">Фильмы</Link>
+        <Link className="header-alt__saved" to="/saved-movies">Сохранённые фильмы</Link>
       </div>
-      <button className="header-alt__profile"></button>
+      <Link className="header-alt__profile" to="/profile"></Link>
     </header>
   );
 };

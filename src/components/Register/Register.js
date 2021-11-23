@@ -3,12 +3,12 @@ import HeaderRegLog from "../HeaderRegLog/HeaderRegLog";
 import RegisterForm from "../RegisterForm/RegisterForm";
 import "./Register.css";
 
-function Register() {
+function Register({handleRegister}) {
 	const title = "Добро пожаловать!"
 	return (
 		<div className="register">
 			<HeaderRegLog title={title} />
-			<RegisterForm />
+			<RegisterForm handleRegister = {handleRegister}/>
 			<div className="register__container">
 				<span className="register__text">Уже зарегистрированы?</span>
 				<NavLink to="/signin" className="register__link">Войти</NavLink>

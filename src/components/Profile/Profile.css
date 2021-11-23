@@ -37,6 +37,9 @@
   font-size: 11px;
   line-height: 13px;
   color: #fff;
+  background: none;
+  border: none;
+  text-align: right;
 }
 
 .profile__edit-button {
@@ -53,6 +56,11 @@
   display: block;
   margin: 0 auto;
   cursor: pointer;
+}
+
+.profile__edit-button:disabled {
+  color: #ffffffa1;
+  cursor: default;
 }
 
 .profile__exit-button {

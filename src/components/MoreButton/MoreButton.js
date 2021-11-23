@@ -1,9 +1,9 @@
 import "./MoreButton.css";
 
-function MoreButton() {
+function MoreButton({handleMoreButtonClick}) {
 	return (
 		<div className="more-button">
-			<button className="more-button__item">Ещё</button>
+			<button className="more-button__item" onClick={handleMoreButtonClick} >Ещё</button>
 		</div>
 	)
 };

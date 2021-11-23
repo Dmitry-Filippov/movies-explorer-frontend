@@ -1,29 +1,81 @@
 import "./Profile.css";
 import HeaderAlt from "../HeaderAlt/HeaderAlt";
 import HeaderBurg from "../HeaderBurg/HeaderBurg";
+import React from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { patchUser } from "../../utils/MainApi";
 
-function Profile({ handleBurgerMenuClick}) {
-  const name = "Дмитрий";
-  const email = "dima197@ya.com";
+function Profile({ handleBurgerMenuClick, handleLogOut }) {
+  const currentUser = React.useContext(CurrentUserContext);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [newName, setNewName] = React.useState(null);
+  const [newEmail, setNewEmail] = React.useState(null);
+  const [isButtonAvalable, setButtonAvalable] = React.useState(false);
+
+  function handleNameInputChange(e) {
+    setNewName(e.target.value);
+  }
+  function handleEmailInputChange(e) {
+    setNewEmail(e.target.value);
+  }
+  function handleProfileChange() {
+    patchUser(
+      `${newName ? newName : name}`,
+      `${newEmail ? newEmail : email}`,
+      localStorage.getItem("token")
+    ).then((res) => {
+      setName(res.name);
+      setEmail(res.email);
+    });
+  }
+
+  React.useEffect(() => {
+    if (newName === name || newEmail === email) {
+      setButtonAvalable(false);
+    } else {
+      setButtonAvalable(true);
+    }
+  }, [newName, newEmail, name, email]);
+
+  React.useEffect(() => {
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+    setButtonAvalable(false)
+  }, []);
   return (
     <div className="profile">
       <HeaderAlt />
-      <HeaderBurg
-        handleBurgerMenuClick={handleBurgerMenuClick}
-      />
+      <HeaderBurg handleBurgerMenuClick={handleBurgerMenuClick} />
       <h1 className="profile__greating">Привет, {name}!</h1>
       <div className="profile__text-line">
         <p className="profile__text">Имя</p>
-        <p className="profile__text">{name}</p>
+        <input
+          className="profile__text"
+          defaultValue={name}
+          onChange={handleNameInputChange}
+        ></input>
       </div>
       <div className="profile__text-line profile__text-line_email">
         <p className="profile__text">E-mail</p>
-        <p className="profile__text">{email}</p>
+        <input
+          className="profile__text"
+          defaultValue={email}
+          onChange={handleEmailInputChange}
+        ></input>
       </div>
-      <button className="profile__edit-button">Редактировать</button>
-      <button className="profile__exit-button">Выйти из аккаунта</button>
+      <button
+        className="profile__edit-button"
+        onClick={handleProfileChange}
+        disabled={isButtonAvalable ? false : true}
+      >
+        Редактировать
+      </button>
+      <button className="profile__exit-button" onClick={handleLogOut}>
+        Выйти из аккаунта
+      </button>
     </div>
   );
 }
 
-export default Profile; 
+export default Profile;

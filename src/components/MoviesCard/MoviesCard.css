@@ -15,6 +15,7 @@
   padding: 18px 0 0 18px;
   margin: 0;
   display: inline-block;
+  max-width: 60%;
 }
 
 .movies-card__duration {
@@ -32,11 +33,19 @@
   color: #8b8b8b;
 }
 
+.movies-card__img-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px
+}
+
 .movies-card__image {
   display: block;
   margin: 0 auto;
   max-width: 100%;
   padding-top: 18px;
+  max-height: 200px;
 }
 
 .movies-card__button {
