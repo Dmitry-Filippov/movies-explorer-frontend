@@ -2,7 +2,7 @@ import React from "react";
 import validator from "validator";
 import "./RegisterForm.css";
 
-function RegisterForm({ handleRegister }) {
+function RegisterForm({ handleRegister, isRegisterWrong }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [name, setName] = React.useState("");
@@ -40,12 +40,11 @@ function RegisterForm({ handleRegister }) {
     if (password !== "") {
       setPasswordValid(true);
     } else {
-      setPasswordValid(false)
+      setPasswordValid(false);
     }
   }
   function handleFormSubmit(e) {
     e.preventDefault();
-    console.log(email, name, password);
     handleRegister(name, email, password);
   }
 
@@ -81,9 +80,13 @@ function RegisterForm({ handleRegister }) {
         value={password}
         required
       ></input>
-      <span className="register-form__span register-form__span_type_err">
-        Что-то пошло не так...
-      </span>
+      {isRegisterWrong ? (
+        <span className="register-form__span register-form__span_type_err">
+          Что-то пошло не так...
+        </span>
+      ) : (
+        <div></div>
+      )}
       <button
         className="register-form__submit"
         type="submit"

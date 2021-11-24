@@ -1,5 +1,4 @@
 export const BASE_URL = "http://api.filippov-diploma.nomoredomains.club";
-// export const BASE_URL = "http://localhost:4000";
 
 function __getResponseData(res) {
   if (res.ok) {
@@ -13,7 +12,6 @@ export const register = (name, email, password) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
-      // 'Accept': "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -96,7 +94,7 @@ export const saveMovie = (movie, token, owner) => {
 }
 
 export const delMovie = (movieId, token) => {
-  return fetch(`${BASE_URL}/movie/${movieId}`, {
+  return fetch(`${BASE_URL}/movies/${movieId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

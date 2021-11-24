@@ -31,13 +31,15 @@ function MoviesCard({ title, duration, img, movie, movieId, isSaved }) {
   }
 
   function handleDelCard() {
-    console.log(movie)
-    delMovie(movieId, token).then((res) => {
-      console.log(res);
-      setCardSaved(false);
-    }).catch(err => {
-      console.log(err)
-    });
+    console.log(movie.owner, currentUser._id);
+    delMovie(movieId, token)
+      .then((res) => {
+        console.log(res);
+        setCardSaved(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function durationText(duration) {

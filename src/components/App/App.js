@@ -27,6 +27,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState(null);
   const [isLoaderActive, setLoaderActive] = React.useState(false);
   const token = localStorage.getItem("token");
+  const [isRegisterWrong, setRegisterWrong] = React.useState(false);
 
   React.useEffect(() => {
     tokenCheck();
@@ -48,18 +49,21 @@ function App() {
   }
 
   function handleRegister(name, email, password) {
-    register(name, email, password).then((res) => {
-      console.log(res);
-      history.push("/signin");
-    });
+    register(name, email, password)
+      .then((res) => {
+        setRegisterWrong(false);
+        history.push("/signin");
+      })
+      .catch((err) => {
+        setRegisterWrong(true);
+      });
   }
 
   function handleLogIn(email, password) {
     authorize(email, password).then((res) => {
-      console.log(res);
       localStorage.setItem("token", res.token);
       setLoggedIn(true);
-      history.push("/movies");
+      tokenCheck();
     });
   }
 
@@ -77,7 +81,9 @@ function App() {
     if (localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
       getContent(token).then((res) => {
+        console.log(res);
         setLoggedIn(true);
+        setCurrentUser(res);
         history.push("/movies");
       });
     }
@@ -180,7 +186,10 @@ function App() {
             handleLogOut={handleLogOut}
           />
           <Route path="/signup">
-            <Register handleRegister={handleRegister} />
+            <Register
+              handleRegister={handleRegister}
+              isRegisterWrong={isRegisterWrong}
+            />
           </Route>
           <Route path="/signin">
             <Login handleLogIn={handleLogIn} tokenCheck={tokenCheck} />
