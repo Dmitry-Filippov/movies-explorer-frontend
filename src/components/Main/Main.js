@@ -4,11 +4,12 @@ import Promo from "../Promo/Promo";
 import AboutProject from "../AboutProject/AboutProject";
 import Techs from "../Techs/Techs";
 import AboutMe from "../AboutMe/AboutMe";
+import HeaderAlt from "../HeaderAlt/HeaderAlt";
 
-function Main() {
+function Main({loggedIn}) {
   return (
     <div>
-      <Header />
+      {loggedIn ? <HeaderAlt /> : <Header />}
       <Promo />
       <AboutProject />
       <Techs />

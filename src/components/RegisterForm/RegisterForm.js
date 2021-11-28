@@ -19,29 +19,53 @@ function RegisterForm({ handleRegister, isRegisterWrong }) {
     }
   }, [isNameValid, isEmailValid, isPasswordValid]);
 
-  function handleNameChange(e) {
-    setName(e.target.value);
+  React.useEffect(() => {
     if (name.length > 0) {
       setNameValid(true);
     } else {
       setNameValid(false);
     }
-  }
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
+  }, [name]);
+
+  React.useEffect(() => {
     if (validator.isEmail(email)) {
       setEmailValid(true);
     } else {
       setEmailValid(false);
     }
-  }
-  function handlePasswordChange(e) {
-    setPassword(e.target.value);
+  }, [email]);
+
+  React.useEffect(() => {
     if (password !== "") {
       setPasswordValid(true);
     } else {
       setPasswordValid(false);
     }
+  });
+
+  function handleNameChange(e) {
+    setName(e.target.value);
+    // if (name.length > 0) {
+    //   setNameValid(true);
+    // } else {
+    //   setNameValid(false);
+    // }
+  }
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+    // if (validator.isEmail(email)) {
+    //   setEmailValid(true);
+    // } else {
+    //   setEmailValid(false);
+    // }
+  }
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+    // if (password !== "") {
+    //   setPasswordValid(true);
+    // } else {
+    //   setPasswordValid(false);
+    // }
   }
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -53,7 +77,7 @@ function RegisterForm({ handleRegister, isRegisterWrong }) {
       <span className="register-form__span">Имя</span>
       <input
         className={`register-form__input register-form__input_type_name ${
-          isNameValid ? "" : "register-form__input_errored"
+          isNameValid ? "" : "register-form__input_invalid"
         }`}
         type="text"
         placeholder="Иван"
@@ -61,10 +85,11 @@ function RegisterForm({ handleRegister, isRegisterWrong }) {
         value={name}
         required
       ></input>
+      {isNameValid ? <div></div> : <span className="register-form__span register-form__span_type_err">Введите имя</span>}
       <span className="register-form__span">E-mail</span>
       <input
         className={`register-form__input register-form__input_type_email ${
-          isEmailValid ? "" : "register-form__input_errored"
+          isEmailValid ? "" : "register-form__input_invalid"
         }`}
         type="email"
         placeholder="ivanivanov@example.com"
@@ -72,6 +97,7 @@ function RegisterForm({ handleRegister, isRegisterWrong }) {
         value={email}
         required
       ></input>
+      {isEmailValid ? <div></div> : <span className="register-form__span register-form__span_type_err">Невалидный Email</span>}
       <span className="register-form__span">Пароль</span>
       <input
         className="register-form__input register-form__input_type_password"
@@ -80,6 +106,7 @@ function RegisterForm({ handleRegister, isRegisterWrong }) {
         value={password}
         required
       ></input>
+      {isPasswordValid ? <div></div> : <span className="register-form__span register-form__span_type_err">Введите пароль</span>}
       {isRegisterWrong ? (
         <span className="register-form__span register-form__span_type_err">
           Что-то пошло не так...

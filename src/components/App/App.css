@@ -2,3 +2,7 @@
   background-color: rgba(32, 32, 32, 1);
   min-height: 100vh;
 }
+
+.app__preloader {
+  padding-top: 120px;
+}

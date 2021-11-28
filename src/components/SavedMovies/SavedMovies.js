@@ -8,39 +8,45 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 
-function SavedMovies({ handleBurgerMenuClick }) {
-  const currentUser = React.useContext(CurrentUserContext);
-  const token = localStorage.getItem("token");
-  const [savedMovies, setSavedMovies] = React.useState([]);
-
-  React.useEffect(() => {
-    getSavedMovies(token).then((res) => {
-      console.log(res);
-      setSavedMovies(res);
-    });
-  }, []);
-
+function SavedMovies({
+  handleBurgerMenuClick,
+  isCheckboxActive,
+  handleCheckboxClick,
+  movies,
+}) {
   return (
     <div>
       <HeaderAlt />
       <HeaderBurg handleBurgerMenuClick={handleBurgerMenuClick} />
-      <SearchForm />
+      <SearchForm handleCheckboxClick={handleCheckboxClick} />
       <MoviesCardList>
-        {savedMovies.map((movie) => {
-          return (
-            <MoviesCard
-              title={movie.nameRU}
-              duration={movie.duration}
-              img={movie.image}
-              movie={movie}
-              movieId={movie._id}
-              isSaved={true}
-            />
-          );
-        })}
-        {/* <MoviesCard buttonClass = "movies-card__button_del" buttonText=""/>
-        <MoviesCard buttonClass = "movies-card__button_del" buttonText=""/>
-        <MoviesCard buttonClass = "movies-card__button_del" buttonText=""/> */}
+        {isCheckboxActive
+          ? movies
+              .filter((movie) => movie.duration <= 40)
+              .map((movie) => {
+                return (
+                  <MoviesCard
+                    title={movie.nameRU}
+                    duration={movie.duration}
+                    img={movie.image}
+                    movie={movie}
+                    movieId={movie._id}
+                    isSaved={true}
+                  />
+                );
+              })
+          : movies.map((movie) => {
+              return (
+                <MoviesCard
+                  title={movie.nameRU}
+                  duration={movie.duration}
+                  img={movie.image}
+                  movie={movie}
+                  movieId={movie._id}
+                  isSaved={true}
+                />
+              );
+            })}
       </MoviesCardList>
       <div style={{ minHeight: "140px" }}></div>
       <Footer />

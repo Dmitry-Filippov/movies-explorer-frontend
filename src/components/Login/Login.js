@@ -4,7 +4,7 @@ import HeaderRegLog from "../HeaderRegLog/HeaderRegLog";
 import LoginForm from "../LoginForm/LoginForm";
 import { NavLink } from "react-router-dom";
 
-function Login({handleLogIn, tokenCheck}) {
+function Login({handleLogIn, tokenCheck, isLogInWrong}) {
 
   React.useEffect(() => {
     // tokenCheck();
@@ -14,7 +14,7 @@ function Login({handleLogIn, tokenCheck}) {
   return (
     <div className="login">
       <HeaderRegLog title={text} />
-      <LoginForm handleLogIn = {handleLogIn}/>
+      <LoginForm handleLogIn = {handleLogIn} isLogInWrong={isLogInWrong}/>
       <div className="login__container">
         <span className="login__text">Ещё не зарегистрированы?</span>
 				<NavLink className="login__link" to="/signup">Регистрация</NavLink>

@@ -3,13 +3,18 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { delMovie, saveMovie } from "../../utils/MainApi";
 import "./MoviesCard.css";
 
-function MoviesCard({ title, duration, img, movie, movieId, isSaved }) {
-  const [isCardSaved, setCardSaved] = React.useState(isSaved);
-  // const [movieId, setMovieId] = React.useState("");
+function MoviesCard({ title, duration, img, movie, savedMovies, isSaved }) {
+  const [isCardSaved, setCardSaved] = React.useState(
+    movie.isLiked || movie.owner
+  );
   const token = localStorage.getItem("token");
   const currentUser = React.useContext(CurrentUserContext);
   const buttonClass = isCardSaved
-    ? "movies-card__button_saved"
+    ? `${
+        isSaved
+          ? "movies-card__button_saved_type_del"
+          : "movies-card__button_saved"
+      }`
     : "movies-card__button";
   const buttonText = isCardSaved ? "" : "Сохранить";
 
@@ -22,19 +27,24 @@ function MoviesCard({ title, duration, img, movie, movieId, isSaved }) {
   }
 
   function handleSaveCard() {
-    console.log(movie);
-    saveMovie(movie, token, currentUser._id).then((res) => {
-      console.log(res);
-      // setMovieId(res._id);
-      setCardSaved(true);
-    });
+    saveMovie(movie, token, currentUser._id)
+      .then((res) => {
+        movie.isLiked = true;
+        movie._id = res._id;
+        console.log(movie, res);
+        setCardSaved(true);
+        savedMovies.push(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleDelCard() {
-    console.log(movie.owner, currentUser._id);
-    delMovie(movieId, token)
+    console.log(movie);
+    delMovie(movie._id, token)
       .then((res) => {
-        console.log(res);
+        movie.isLiked = false;
         setCardSaved(false);
       })
       .catch((err) => {
@@ -70,7 +80,15 @@ function MoviesCard({ title, duration, img, movie, movieId, isSaved }) {
       <h2 className="movies-card__title">{title}</h2>
       <p className="movies-card__duration">{durationText(duration)}</p>
       <div className="movies-card__img-wrapper">
-        <img className="movies-card__image" alt="" src={img} />
+        <img
+          className="movies-card__image"
+          alt=""
+          src={
+            typeof img === "object"
+              ? `https://api.nomoreparties.co${movie.image.url}`
+              : img
+          }
+        />
       </div>
       <button className={buttonClass} onClick={handleButtonClick}>
         {buttonText}

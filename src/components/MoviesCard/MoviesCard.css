@@ -78,6 +78,19 @@
   cursor: pointer;
 }
 
+.movies-card__button_saved_type_del {
+  width: 100px;
+  height: 29px;
+  background: url("../../images/savedMovieDel.png");
+  background-position: center;
+  background-size: cover;
+  border-radius: 30px;
+  border: none;
+  display: block;
+  margin: 18px auto;
+  cursor: pointer;
+}
+
 .movies-card__button_del {
   width: 100px;
   height: 29px;

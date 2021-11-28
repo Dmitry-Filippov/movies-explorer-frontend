@@ -16,15 +16,57 @@ function Movies({
   isLoaderActive,
   nothingMatched,
   isMoreButtonActive,
-  handleMoreButtonClick
+  handleMoreButtonClick,
+  handleCheckboxClick,
+  isCheckboxActive,
+  savedMovies
 }) {
   if (nothingMatched) {
     return (
       <div>
         <HeaderAlt />
         <HeaderBurg handleBurgerMenuClick={handleBurgerMenuClick} />
-        <SearchForm handleMoviesSearch={handleMoviesSearch} />
+        <SearchForm
+          handleMoviesSearch={handleMoviesSearch}
+          handleCheckboxClick={handleCheckboxClick}
+        />
         <NothingMatched />
+        <Footer />
+      </div>
+    );
+  } else if (isCheckboxActive) {
+    return (
+      <div>
+        <HeaderAlt />
+        <HeaderBurg handleBurgerMenuClick={handleBurgerMenuClick} />
+        <SearchForm
+          handleMoviesSearch={handleMoviesSearch}
+          handleCheckboxClick={handleCheckboxClick}
+        />
+        {isLoaderActive ? (
+          <Preloader />
+        ) : (
+          <MoviesCardList>
+            {movies
+              .filter((movie) => movie.duration <= 40)
+              .map((movie) => {
+                return (
+                  <MoviesCard
+                    title={movie.nameRU}
+                    duration={movie.duration}
+                    img={`https://api.nomoreparties.co${movie.image.url}`}
+                    movie={movie}
+                    savedMovies={savedMovies}
+                  />
+                );
+              })}
+          </MoviesCardList>
+        )}
+        {isMoreButtonActive ? (
+          <MoreButton handleMoreButtonClick={handleMoreButtonClick} />
+        ) : (
+          <div></div>
+        )}
         <Footer />
       </div>
     );
@@ -33,7 +75,10 @@ function Movies({
       <div>
         <HeaderAlt />
         <HeaderBurg handleBurgerMenuClick={handleBurgerMenuClick} />
-        <SearchForm handleMoviesSearch={handleMoviesSearch} />
+        <SearchForm
+          handleMoviesSearch={handleMoviesSearch}
+          handleCheckboxClick={handleCheckboxClick}
+        />
         {isLoaderActive ? (
           <Preloader />
         ) : (
@@ -45,12 +90,17 @@ function Movies({
                   duration={movie.duration}
                   img={`https://api.nomoreparties.co${movie.image.url}`}
                   movie={movie}
+                  savedMovies={savedMovies}
                 />
               );
             })}
           </MoviesCardList>
         )}
-        {isMoreButtonActive ? <MoreButton handleMoreButtonClick={handleMoreButtonClick}/> : <div></div>}
+        {isMoreButtonActive ? (
+          <MoreButton handleMoreButtonClick={handleMoreButtonClick} />
+        ) : (
+          <div></div>
+        )}
         <Footer />
       </div>
     );
