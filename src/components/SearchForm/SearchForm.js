@@ -14,7 +14,6 @@ function SearchForm({ handleMoviesSearch, handleCheckboxClick }) {
     if (!e.target[0].value) {
       handleError();
     } else {
-      // setInputInvalid(false)
       handleMoviesSearch(e.target[0].value);
     }
   }

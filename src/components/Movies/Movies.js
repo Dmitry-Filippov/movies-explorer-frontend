@@ -19,7 +19,8 @@ function Movies({
   handleMoreButtonClick,
   handleCheckboxClick,
   isCheckboxActive,
-  savedMovies
+  savedMovies,
+  setSavedMovies,
 }) {
   if (nothingMatched) {
     return (
@@ -57,6 +58,7 @@ function Movies({
                     img={`https://api.nomoreparties.co${movie.image.url}`}
                     movie={movie}
                     savedMovies={savedMovies}
+                    setSavedMovies={setSavedMovies}
                   />
                 );
               })}
@@ -91,6 +93,7 @@ function Movies({
                   img={`https://api.nomoreparties.co${movie.image.url}`}
                   movie={movie}
                   savedMovies={savedMovies}
+                  setSavedMovies={setSavedMovies}
                 />
               );
             })}

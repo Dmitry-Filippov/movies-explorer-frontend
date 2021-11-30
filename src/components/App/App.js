@@ -31,6 +31,7 @@ function App() {
   const [allMovies, setAllMovies] = React.useState([]);
   const [newMoviesArr, setNewMoviesArr] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
+  const [mySavedMovies, setMySavedMovies] = React.useState([]);
   const [isMoreButtonActive, setMoreButtonActive] = React.useState(false);
   const [nothingMatched, setNothingMatched] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(null);
@@ -39,6 +40,17 @@ function App() {
   const [isRegisterWrong, setRegisterWrong] = React.useState(false);
   const [isLogInWrong, setLogInWrong] = React.useState(false);
   const [isCheckboxActive, setCheckboxActive] = React.useState(false);
+  const [savedMatchedMovies, setSavedMatchedMovies] = React.useState([]);
+  const [nothingMatchedSaved, setNothingMatchedSaved] = React.useState(false);
+  const [noSavedMovies, setNoSavedMovies] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!savedMovies[0]) {
+      setNoSavedMovies(true);
+    } else {
+      setNoSavedMovies(false);
+    }
+  }, [savedMovies]);
 
   React.useEffect(() => {
     setCheckboxActive(false);
@@ -98,6 +110,7 @@ function App() {
             savedMovie.nameRU === movie.nameRU)
         ) {
           movie.isLiked = true;
+          movie._id = savedMovie._id;
           savedMovie.isLiked = true;
         }
       });
@@ -163,27 +176,87 @@ function App() {
     }
   }
 
-  function handleMoviesSearch(text) {
-    setMoviesToRender([]);
-    setNewMoviesArr([]);
-    setMatchedMovies([]);
-    setNothingMatched(false);
-    localStorage.removeItem("matchedMovies");
-    const matchedItems = allMovies.filter((movie) => {
-      if (
-        (movie.nameRU && movie.nameRU.includes(text)) ||
-        (movie.nameEN && movie.nameEN.includes(text))
-      ) {
-        return true;
-      } else return false;
+  function handleMoviesToZero() {
+    return new Promise((resolve, reject) => {
+      moviesToRender.length = 0;
+      matchedMovies.length = 0;
+      // newMoviesArr.length = 0;
+      resolve(true);
     });
-    if (matchedItems.length === 0) {
-      setNothingMatched(true);
+  }
+
+  function handleSavedMoviesSearch(text) {
+    setNothingMatchedSaved(false);
+    console.log(text);
+    const matchedItems = allMovies
+      .filter((movie) => (movie.isLiked ? true : false))
+      .filter((movie) =>
+        (movie.nameRU &&
+          movie.nameRU.toLowerCase().includes(text.toLowerCase())) ||
+        (movie.nameEN &&
+          movie.nameEN.toLowerCase().includes(text.toLowerCase()))
+          ? true
+          : false
+      );
+    if (!matchedItems[0]) {
+      setNothingMatchedSaved(true);
     } else {
-      setMatchedMovies(matchedItems);
-      localStorage.setItem("matchedMovies", JSON.stringify(matchedItems));
-      handleMoviesToRender(matchedItems);
+      setSavedMatchedMovies(matchedItems);
     }
+  }
+
+  function handleMoviesSearch(text) {
+    handleMoviesToZero().then((res) => {
+      setLoaderActive(true);
+      setNewMoviesArr([]);
+      setNothingMatched(false);
+      localStorage.removeItem("matchedMovies");
+      const matchedItems = allMovies.filter((movie) => {
+        if (
+          (movie.nameRU &&
+            movie.nameRU.toLowerCase().includes(text.toLowerCase())) ||
+          (movie.nameEN &&
+            movie.nameEN.toLowerCase().includes(text.toLowerCase()))
+        ) {
+          return true;
+        } else return false;
+      });
+      if (matchedItems.length === 0) {
+        setNothingMatched(true);
+      } else {
+        matchedMovies.forEach((movie) => {
+          matchedMovies.push(movie);
+        });
+        // setMatchedMovies(matchedItems);
+        matchedMovies.push(...matchedItems);
+        console.log(matchedMovies);
+        localStorage.setItem("matchedMovies", JSON.stringify(matchedItems));
+        handleMoviesToRender(matchedMovies);
+      }
+    });
+    // setLoaderActive(true);
+    // setNewMoviesArr([]);
+    // setMatchedMovies([]);
+    // setNothingMatched(false);
+    // localStorage.removeItem("matchedMovies");
+    // const matchedItems = allMovies.filter((movie) => {
+    //   if (
+    //     (movie.nameRU &&
+    //       movie.nameRU.toLowerCase().includes(text.toLowerCase())) ||
+    //     (movie.nameEN &&
+    //       movie.nameEN.toLowerCase().includes(text.toLowerCase()))
+    //   ) {
+    //     return true;
+    //   } else return false;
+    // });
+    // if (matchedItems.length === 0) {
+    //   setNothingMatched(true);
+    // } else {
+    //   setMatchedMovies(matchedItems);
+    //   localStorage.setItem("matchedMovies", JSON.stringify(matchedItems));
+    //   setMoviesToRender([]);
+    //   handleMoviesToRender(matchedItems);
+    // }
   }
 
   function handleCheckboxClick() {
@@ -195,30 +268,65 @@ function App() {
   }
 
   function likedMoviesCheck(arr1, arr2) {
-    arr1.forEach((movie) => {
-      arr2.forEach((savedMovie) => {
+    if (!currentUser) {
+      getContent()
+        .then((res) => {
+          setCurrentUser(res);
+        })
+        .then((res) => {
+          likedMoviesCheck(arr1, arr2);
+        });
+    } else {
+      const mySavedMovies = arr2.filter(
+        (movie) => movie.ownerr === currentUser._id
+      );
+      console.log(arr2);
+      arr1.forEach((movie) => {
+        arr2.forEach((savedMovie) => {
+          if (
+            (savedMovie.nameEN &&
+              movie.nameEN &&
+              savedMovie.nameEN === movie.nameEN) ||
+            (savedMovie.nameRU &&
+              movie.nameRU &&
+              savedMovie.nameRU === movie.nameRU)
+          ) {
+            movie.isLiked = true;
+            movie._id = savedMovie._id;
+            savedMovie.isLiked = true;
+          }
+        });
+      });
+    }
+  }
+
+  function handleCardSaveDelCheck() {
+    moviesToRender.forEach((movie) => {
+      savedMovies.forEach((savedMovie) => {
         if (
           (savedMovie.nameEN &&
             movie.nameEN &&
+            !savedMovie.isLiked &&
             savedMovie.nameEN === movie.nameEN) ||
           (savedMovie.nameRU &&
             movie.nameRU &&
+            !savedMovie.isLiked &&
             savedMovie.nameRU === movie.nameRU)
         ) {
-          movie.isLiked = true;
-          movie._id = savedMovie._id;
-          savedMovie.isLiked = true;
+          console.log("fuck eah");
+          movie.isLiked = false;
         }
       });
     });
   }
 
   function handleMoviesToRender(moviesArr) {
+    console.log(moviesArr, moviesToRender);
     getSavedMovies(token).then((res) => {
       likedMoviesCheck(moviesArr, res);
       if (moviesArr.length <= 3) {
         setMoreButtonActive(false);
-        setMoviesToRender(matchedMovies);
+        moviesToRender.push(...matchedMovies);
       } else {
         setMoreButtonActive(true);
         const newArr = moviesArr.filter((movie) => {
@@ -243,12 +351,66 @@ function App() {
             return true;
           }
         });
-        const arr = [...moviesToRender, ...newArr];
-        setMoviesToRender(arr);
+        moviesToRender.push(...newArr);
         setNewMoviesArr(newMoviesArr);
       }
+      setLoaderActive(false);
     });
   }
+
+  // function handleMoviesToRender(moviesArr) {
+  //   console.log(moviesArr, moviesToRender);
+  //   getSavedMovies(token).then((res) => {
+  //     likedMoviesCheck(moviesArr, res);
+  //     if (moviesArr.length <= 3) {
+  //       setMoreButtonActive(false);
+  //       console.log(matchedMovies);
+  //       setMoviesToRender(matchedMovies);
+  //     } else {
+  //       setMoreButtonActive(true);
+  //       const newArr = moviesArr.filter((movie) => {
+  //         if (
+  //           movie.nameRU === moviesArr[0].nameRU ||
+  //           movie.nameRU === moviesArr[1].nameRU ||
+  //           movie.nameRU === moviesArr[2].nameRU
+  //         ) {
+  //           return true;
+  //         } else {
+  //           return false;
+  //         }
+  //       });
+  //       const newMoviesArr = moviesArr.filter((movie) => {
+  //         if (
+  //           movie.nameRU === moviesArr[0].nameRU ||
+  //           movie.nameRU === moviesArr[1].nameRU ||
+  //           movie.nameRU === moviesArr[2].nameRU
+  //         ) {
+  //           return false;
+  //         } else {
+  //           return true;
+  //         }
+  //       });
+  //       if (moviesToRender[0] && !isMoviesToRenderReset) {
+  //         moviesToRender.length = 0;
+  //         const arr = [...moviesToRender, ...newArr];
+  //         setMoviesToRender(arr);
+  //         // moviesToRender.push(...newArr)
+  //         setNewMoviesArr(newMoviesArr);
+  //         setMoviesToRenderReset(true);
+  //       } else {
+  //         const arr = [...moviesToRender, ...newArr];
+  //         setMoviesToRender(arr);
+  //         // moviesToRender.push(...newArr)
+  //         setNewMoviesArr(newMoviesArr);
+  //       }
+  //       // const arr = [...moviesToRender, ...newArr];
+  //       // setMoviesToRender(arr);
+  //       // // moviesToRender.push(...newArr)
+  //       // setNewMoviesArr(newMoviesArr);
+  //     }
+  //     setLoaderActive(false);
+  //   });
+  // }
 
   function handleMoreButtonClick() {
     handleMoviesToRender(newMoviesArr);
@@ -268,6 +430,7 @@ function App() {
               handleBurgerMenuClick={handleBurgerMenuClick}
               movies={moviesToRender}
               savedMovies={savedMovies}
+              setSavedMovies={setSavedMovies}
               handleMoviesSearch={handleMoviesSearch}
               isLoaderActive={isLoaderActive}
               nothingMatched={nothingMatched}
@@ -281,12 +444,15 @@ function App() {
               path="/saved-movies"
               loggedIn={loggedIn}
               handleBurgerMenuClick={handleBurgerMenuClick}
-              movies={allMovies.filter((movie) =>
-                movie.isLiked ? true : false
-              )}
-              handleMoviesSearch={handleMoviesSearch}
+              movies={savedMatchedMovies[0] ? savedMatchedMovies : savedMovies}
+              savedMovies={savedMovies}
+              setSavedMovies={setSavedMovies}
+              nothingMatchedSaved={nothingMatchedSaved}
+              handleMoviesSearch={handleSavedMoviesSearch}
               handleCheckboxClick={handleCheckboxClick}
               isCheckboxActive={isCheckboxActive}
+              noSavedMovies={noSavedMovies}
+              handleCardSaveDelCheck={handleCardSaveDelCheck}
               component={SavedMovies}
             />
             <ProtectedRoute

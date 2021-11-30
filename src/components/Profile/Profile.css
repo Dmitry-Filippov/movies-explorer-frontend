@@ -42,6 +42,32 @@
   text-align: right;
 }
 
+.profile__notification {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #3ddc84;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.profile__notification_err {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #ee3465;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+}
+
 .profile__edit-button {
   padding: 220px 0 0 0;
   font-family: "Inter", sans-serif;

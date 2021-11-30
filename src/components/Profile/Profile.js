@@ -12,6 +12,8 @@ function Profile({ handleBurgerMenuClick, handleLogOut }) {
   const [newName, setNewName] = React.useState(null);
   const [newEmail, setNewEmail] = React.useState(null);
   const [isButtonAvalable, setButtonAvalable] = React.useState(false);
+  const [isUserUpdated, setUserUpdated] = React.useState(false);
+  const [isError, setError] = React.useState(false);
 
   function handleNameInputChange(e) {
     setNewName(e.target.value);
@@ -24,14 +26,21 @@ function Profile({ handleBurgerMenuClick, handleLogOut }) {
       `${newName ? newName : name}`,
       `${newEmail ? newEmail : email}`,
       localStorage.getItem("token")
-    ).then((res) => {
-      setName(res.name);
-      setEmail(res.email);
-    });
+    )
+      .then((res) => {
+        setName(res.name);
+        setEmail(res.email);
+        setError(false);
+        setUserUpdated(true);
+      })
+      .catch((err) => {
+        setUserUpdated(false);
+        setError(true);
+      });
   }
 
   React.useEffect(() => {
-    if (newName === name || newEmail === email) {
+    if (newName === name && newEmail === email) {
       setButtonAvalable(false);
     } else {
       setButtonAvalable(true);
@@ -41,8 +50,11 @@ function Profile({ handleBurgerMenuClick, handleLogOut }) {
   React.useEffect(() => {
     setName(currentUser.name);
     setEmail(currentUser.email);
-    setButtonAvalable(false)
+    setButtonAvalable(false);
+    setUserUpdated(false);
+    setError(false);
   }, []);
+
   return (
     <div className="profile">
       <HeaderAlt />
@@ -64,6 +76,17 @@ function Profile({ handleBurgerMenuClick, handleLogOut }) {
           onChange={handleEmailInputChange}
         ></input>
       </div>
+      {isUserUpdated ? (
+        <span className="profile__notification">Данные успешно обновлены!</span>
+      ) : (
+        <div></div>
+      )}
+      {isError ? (
+        <span className="profile__notification_err">Что-то пошло не так!</span>
+      ) : (
+        <div></div>
+      )}
+      {/* <span  className="profile__notification">Данныеуспешно обновлены!</span> */}
       <button
         className="profile__edit-button"
         onClick={handleProfileChange}
