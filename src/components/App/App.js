@@ -104,10 +104,12 @@ function App() {
         if (
           (savedMovie.nameEN &&
             movie.nameEN &&
-            savedMovie.nameEN === movie.nameEN) ||
+            savedMovie.nameEN === movie.nameEN && 
+            movie._id === currentUser._id) ||
           (savedMovie.nameRU &&
             movie.nameRU &&
-            savedMovie.nameRU === movie.nameRU)
+            savedMovie.nameRU === movie.nameRU && 
+            movie._id === currentUser._id )
         ) {
           movie.isLiked = true;
           movie._id = savedMovie._id;
@@ -142,6 +144,7 @@ function App() {
         localStorage.setItem("token", res.token);
         setLogInWrong(false);
         tokenCheck();
+        history.push("/movies");
       })
       .catch((err) => {
         setLogInWrong(true);
@@ -179,7 +182,6 @@ function App() {
     return new Promise((resolve, reject) => {
       moviesToRender.length = 0;
       matchedMovies.length = 0;
-      // newMoviesArr.length = 0;
       resolve(true);
     });
   }
@@ -226,36 +228,12 @@ function App() {
         matchedMovies.forEach((movie) => {
           matchedMovies.push(movie);
         });
-        // setMatchedMovies(matchedItems);
         matchedMovies.push(...matchedItems);
         console.log(matchedMovies);
         localStorage.setItem("matchedMovies", JSON.stringify(matchedItems));
         handleMoviesToRender(matchedMovies);
       }
     });
-    // setLoaderActive(true);
-    // setNewMoviesArr([]);
-    // setMatchedMovies([]);
-    // setNothingMatched(false);
-    // localStorage.removeItem("matchedMovies");
-    // const matchedItems = allMovies.filter((movie) => {
-    //   if (
-    //     (movie.nameRU &&
-    //       movie.nameRU.toLowerCase().includes(text.toLowerCase())) ||
-    //     (movie.nameEN &&
-    //       movie.nameEN.toLowerCase().includes(text.toLowerCase()))
-    //   ) {
-    //     return true;
-    //   } else return false;
-    // });
-    // if (matchedItems.length === 0) {
-    //   setNothingMatched(true);
-    // } else {
-    //   setMatchedMovies(matchedItems);
-    //   localStorage.setItem("matchedMovies", JSON.stringify(matchedItems));
-    //   setMoviesToRender([]);
-    //   handleMoviesToRender(matchedItems);
-    // }
   }
 
   function handleCheckboxClick() {
@@ -357,60 +335,6 @@ function App() {
     });
   }
 
-  // function handleMoviesToRender(moviesArr) {
-  //   console.log(moviesArr, moviesToRender);
-  //   getSavedMovies(token).then((res) => {
-  //     likedMoviesCheck(moviesArr, res);
-  //     if (moviesArr.length <= 3) {
-  //       setMoreButtonActive(false);
-  //       console.log(matchedMovies);
-  //       setMoviesToRender(matchedMovies);
-  //     } else {
-  //       setMoreButtonActive(true);
-  //       const newArr = moviesArr.filter((movie) => {
-  //         if (
-  //           movie.nameRU === moviesArr[0].nameRU ||
-  //           movie.nameRU === moviesArr[1].nameRU ||
-  //           movie.nameRU === moviesArr[2].nameRU
-  //         ) {
-  //           return true;
-  //         } else {
-  //           return false;
-  //         }
-  //       });
-  //       const newMoviesArr = moviesArr.filter((movie) => {
-  //         if (
-  //           movie.nameRU === moviesArr[0].nameRU ||
-  //           movie.nameRU === moviesArr[1].nameRU ||
-  //           movie.nameRU === moviesArr[2].nameRU
-  //         ) {
-  //           return false;
-  //         } else {
-  //           return true;
-  //         }
-  //       });
-  //       if (moviesToRender[0] && !isMoviesToRenderReset) {
-  //         moviesToRender.length = 0;
-  //         const arr = [...moviesToRender, ...newArr];
-  //         setMoviesToRender(arr);
-  //         // moviesToRender.push(...newArr)
-  //         setNewMoviesArr(newMoviesArr);
-  //         setMoviesToRenderReset(true);
-  //       } else {
-  //         const arr = [...moviesToRender, ...newArr];
-  //         setMoviesToRender(arr);
-  //         // moviesToRender.push(...newArr)
-  //         setNewMoviesArr(newMoviesArr);
-  //       }
-  //       // const arr = [...moviesToRender, ...newArr];
-  //       // setMoviesToRender(arr);
-  //       // // moviesToRender.push(...newArr)
-  //       // setNewMoviesArr(newMoviesArr);
-  //     }
-  //     setLoaderActive(false);
-  //   });
-  // }
-
   function handleMoreButtonClick() {
     handleMoviesToRender(newMoviesArr);
   }
@@ -465,13 +389,14 @@ function App() {
               <Register
                 handleRegister={handleRegister}
                 isRegisterWrong={isRegisterWrong}
+                loggedIn={loggedIn}
               />
             </Route>
             <Route path="/signin">
               <Login
                 handleLogIn={handleLogIn}
-                tokenCheck={tokenCheck}
                 isLogInWrong={isLogInWrong}
+                loggedIn={loggedIn}
               />
             </Route>
             <Route path="/preloader">
