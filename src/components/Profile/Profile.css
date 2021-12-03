@@ -37,6 +37,35 @@
   font-size: 11px;
   line-height: 13px;
   color: #fff;
+  background: none;
+  border: none;
+  text-align: right;
+}
+
+.profile__notification {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #3ddc84;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.profile__notification_err {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #ee3465;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
 }
 
 .profile__edit-button {
@@ -53,6 +82,11 @@
   display: block;
   margin: 0 auto;
   cursor: pointer;
+}
+
+.profile__edit-button:disabled {
+  color: #ffffffa1;
+  cursor: default;
 }
 
 .profile__exit-button {

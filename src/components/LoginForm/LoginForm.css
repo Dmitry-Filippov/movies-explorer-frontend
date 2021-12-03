@@ -13,6 +13,12 @@
   padding-top: 20px;
 }
 
+.login-form__span_type_err {
+  padding-top: 5px;
+  color: #ee3465;
+  display: block;
+}
+
 .login-form__span:first-of-type {
   padding-top: 0;
 }
@@ -33,7 +39,9 @@
   margin-top: 10px;
 }
 
-
+.login-form__input_invalid {
+  color: #ee3465;
+}
 
 .login-form__submit {
   margin-top: 179px;
@@ -50,6 +58,11 @@
   text-align: center;
   color: #fff;
 	cursor: pointer;
+}
+
+.login-form__submit:disabled {
+  cursor: default;
+  background-color: #8b8b8b;
 }
 
 @media screen and (max-width: 500px) {

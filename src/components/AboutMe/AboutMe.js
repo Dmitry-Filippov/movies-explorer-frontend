@@ -45,7 +45,7 @@ function AboutMe() {
           <p>Статичный сайт</p>
           <a
             className="about-me__linkimg"
-            href="http://filippov-diploma.nomoredomains.club"
+            href="https://github.com/Dmitry-Filippov/how-to-learn"
             target="blank"
           >
             <img src={arrowImg} alt="arrow" />
@@ -55,7 +55,7 @@ function AboutMe() {
           <p>Адаптивный сайт</p>
           <a
             className="about-me__linkimg"
-            href="http://filippov-diploma.nomoredomains.club"
+            href="https://github.com/Dmitry-Filippov/russian-travel"
             target="blank"
           >
             <img src={arrowImg} alt="arrow" />
@@ -65,7 +65,7 @@ function AboutMe() {
           <p>Одностраничное приложение</p>
           <a
             className="about-me__linkimg"
-            href="http://filippov-diploma.nomoredomains.club"
+            href="https://github.com/Dmitry-Filippov/react-mesto-auth"
             target="blank"
           >
             <img src={arrowImg} alt="arrow" />

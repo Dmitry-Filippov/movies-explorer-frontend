@@ -18,12 +18,12 @@
   box-sizing: border-box;
 }
 
-.register-form__input_type_name {
-  text-transform: capitalize;
+.register-form__input_invalid {
+  color: #ee3465;
 }
 
-.register-form__input_type_password {
-  color: #ee3465;
+.register-form__input_type_name {
+  text-transform: capitalize;
 }
 
 .register-form__span {
@@ -43,7 +43,8 @@
 }
 
 .register-form__span_type_err {
-  padding-top: 10px;
+  display: block;
+  padding-top: 5px;
   color: #ee3465;
 }
 
@@ -63,4 +64,9 @@
   color: #fff;
 	margin-top: 69px;
 	cursor: pointer;
+}
+
+.register-form__submit:disabled {
+  cursor: default;
+  background-color: #8b8b8b;
 }
