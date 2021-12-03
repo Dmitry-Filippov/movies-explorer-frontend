@@ -259,9 +259,13 @@ function App() {
                   ? mySavedMovies.filter(
                       (movie) =>
                         (movie.nameRU &&
-                          movie.nameRU.toLowerCase().includes(keyWord)) ||
+                          movie.nameRU
+                            .toLowerCase()
+                            .includes(keyWord.toLowerCase())) ||
                         (movie.nameEN &&
-                          movie.nameEN.toLowerCase().includes(keyWord))
+                          movie.nameEN
+                            .toLowerCase()
+                            .includes(keyWord.toLowerCase()))
                     )
                   : nothingMatchedSaved
                   ? nothingMatchedSaved
