@@ -3,11 +3,20 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { delMovie, saveMovie } from "../../utils/MainApi";
 import "./MoviesCard.css";
 
-function MoviesCard({ title, duration, img, movie, savedMovies, isSaved, setSavedMovies, handleCardSaveDelCheck }) {
+function MoviesCard({
+  title,
+  duration,
+  img,
+  movie,
+  savedMovies,
+  isSaved,
+  setSavedMovies,
+  likedMoviesCheck,
+  matchedMovies,
+  localLikesCheck,
+}) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [isCardSaved, setCardSaved] = React.useState(
-    movie.isLiked || movie.owner === currentUser._id
-  );
+  const [isCardSaved, setCardSaved] = React.useState(movie.isLiked);
   const token = localStorage.getItem("token");
   const buttonClass = isCardSaved
     ? `${
@@ -17,6 +26,13 @@ function MoviesCard({ title, duration, img, movie, savedMovies, isSaved, setSave
       }`
     : "movies-card__button";
   const buttonText = isCardSaved ? "" : "Сохранить";
+
+  React.useEffect(() => {
+    setCardSaved(movie.isLiked);
+    if (localLikesCheck) {
+      localLikesCheck();
+    }
+  }, [movie.isLiked]);
 
   function handleButtonClick() {
     if (!isCardSaved) {
@@ -31,9 +47,9 @@ function MoviesCard({ title, duration, img, movie, savedMovies, isSaved, setSave
       .then((res) => {
         movie.isLiked = true;
         movie._id = res._id;
-        console.log(movie, res);
-        setCardSaved(true);
-        savedMovies.push(res);
+        res.isLiked = true;
+        setSavedMovies([...savedMovies, res]);
+        console.log(savedMovies);
       })
       .catch((err) => {
         console.log(err);
@@ -44,10 +60,11 @@ function MoviesCard({ title, duration, img, movie, savedMovies, isSaved, setSave
     delMovie(movie._id, token)
       .then((res) => {
         movie.isLiked = false;
-        movie.deleted = true
-        setCardSaved(false);
-        setSavedMovies(savedMovies.filter(item => item._id !== movie._id))
-        handleCardSaveDelCheck();
+        setSavedMovies(savedMovies.filter((item) => item._id !== movie._id));
+        if (likedMoviesCheck) {
+          console.log('работает')
+          likedMoviesCheck(matchedMovies);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -82,7 +99,11 @@ function MoviesCard({ title, duration, img, movie, savedMovies, isSaved, setSave
       <h2 className="movies-card__title">{title}</h2>
       <p className="movies-card__duration">{durationText(duration)}</p>
       <div className="movies-card__img-wrapper">
-        <a className="movies-card__trailer-link" href={movie.trailerLink} target="blank" >
+        <a
+          className="movies-card__trailer-link"
+          href={movie.trailerLink}
+          target="blank"
+        >
           <img
             className="movies-card__image"
             alt=""

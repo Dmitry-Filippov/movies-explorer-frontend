@@ -19,8 +19,17 @@ function SavedMovies({
   savedMovies,
   setSavedMovies,
   noSavedMovies,
-  handleCardSaveDelCheck
+  handleCardSaveDelCheck,
+  likedMoviesCheck,
+  matchedMovies,
+  localLikesCheck,
+  setSavedMatchedMovies
 }) {
+
+  React.useEffect(() => {
+    setSavedMatchedMovies([])
+  }, [])
+
   if (!nothingMatchedSaved) {
     return (
       <div>
@@ -47,6 +56,9 @@ function SavedMovies({
                       savedMovies={savedMovies}
                       setSavedMovies={setSavedMovies}
                       handleCardSaveDelCheck={handleCardSaveDelCheck}
+                      likedMoviesCheck={likedMoviesCheck}
+                      matchedMovies={matchedMovies}
+                      localLikesCheck={localLikesCheck}
                     />
                   );
                 })
@@ -62,6 +74,9 @@ function SavedMovies({
                     savedMovies={savedMovies}
                     setSavedMovies={setSavedMovies}
                     handleCardSaveDelCheck={handleCardSaveDelCheck}
+                    likedMoviesCheck={likedMoviesCheck}
+                    matchedMovies={matchedMovies}
+                    localLikesCheck={localLikesCheck}
                   />
                 );
               })}
@@ -79,7 +94,7 @@ function SavedMovies({
           handleCheckboxClick={handleCheckboxClick}
           handleMoviesSearch={handleMoviesSearch}
         />
-        
+
         <div style={{ minHeight: "140px" }}></div>
         <Footer />
       </div>

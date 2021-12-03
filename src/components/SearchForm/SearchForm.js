@@ -2,7 +2,7 @@ import React from "react";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import "./SearchForm.css";
 
-function SearchForm({ handleMoviesSearch, handleCheckboxClick }) {
+function SearchForm({ handleMoviesSearch, handleCheckboxClick, setLoaderActive }) {
   const [isInputInvalid, setInputInvalid] = React.useState(false);
 
   function handleError() {
@@ -15,6 +15,7 @@ function SearchForm({ handleMoviesSearch, handleCheckboxClick }) {
       handleError();
     } else {
       handleMoviesSearch(e.target[0].value);
+      // setLoaderActive(false);
     }
   }
   return (

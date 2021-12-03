@@ -30,7 +30,6 @@ function App() {
   const [moviesToRender, setMoviesToRender] = React.useState([]);
   const [allMovies, setAllMovies] = React.useState([]);
   const [newMoviesArr, setNewMoviesArr] = React.useState([]);
-  const [savedMovies, setSavedMovies] = React.useState([]);
   const [mySavedMovies, setMySavedMovies] = React.useState([]);
   const [isMoreButtonActive, setMoreButtonActive] = React.useState(false);
   const [nothingMatched, setNothingMatched] = React.useState(false);
@@ -43,81 +42,90 @@ function App() {
   const [savedMatchedMovies, setSavedMatchedMovies] = React.useState([]);
   const [nothingMatchedSaved, setNothingMatchedSaved] = React.useState(false);
   const [noSavedMovies, setNoSavedMovies] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!savedMovies[0]) {
-      setNoSavedMovies(true);
-    } else {
-      setNoSavedMovies(false);
-    }
-  }, [savedMovies]);
+  const [keyWord, setKeyWord] = React.useState("");
 
   React.useEffect(() => {
     setCheckboxActive(false);
     tokenCheck();
     if (localStorage.getItem("matchedMovies")) {
-      setMatchedMovies(JSON.parse(localStorage.getItem("matchedMovies")));
-      handleMoviesToRender(JSON.parse(localStorage.getItem("matchedMovies")));
+      const matchedItems = JSON.parse(localStorage.getItem("matchedMovies"));
+      likedMoviesCheck(matchedItems);
+      console.log(matchedItems, mySavedMovies);
+      setMatchedMovies(matchedItems);
+      // setMatchedMovies(JSON.parse(localStorage.getItem("matchedMovies")));
+    }
+    if (localStorage.getItem("allMovies")) {
+      setAllMovies(JSON.parse(localStorage.getItem("allMovies")));
     }
   }, []);
 
   React.useEffect(() => {
-    Promise.all([getMovies(), getSavedMovies(token)])
-      .then(([movies, savedMovies]) => {
-        const mySavedMovies = savedMovies.filter((movie) => {
-          if (movie.owner === currentUser._id) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        movies.forEach((movie) => {
-          mySavedMovies.forEach((savedMovie) => {
-            if (
-              (savedMovie.nameEN &&
-                movie.nameEN &&
-                savedMovie.nameEN === movie.nameEN) ||
-              (savedMovie.nameRU &&
-                movie.nameRU &&
-                savedMovie.nameRU === movie.nameRU)
-            ) {
-              movie.isLiked = true;
-              movie._id = savedMovie._id;
-              savedMovie.isLiked = true;
-            }
-          });
-        });
-        setAllMovies(movies);
-        setSavedMovies(mySavedMovies);
-      })
-      .then((res) => {
-        setRender(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [currentUser]);
+    likedMoviesCheck(matchedMovies);
+  });
 
   React.useEffect(() => {
-    moviesToRender.forEach((movie) => {
-      savedMovies.forEach((savedMovie) => {
+    likedMoviesCheck(matchedMovies);
+  }, [matchedMovies]);
+
+  React.useEffect(() => {
+    likedMoviesCheck(allMovies);
+  }, [allMovies]);
+
+  React.useEffect(() => {
+    mySavedMovies.forEach((movie) => {
+      movie.isLiked = true;
+    });
+    console.log(mySavedMovies);
+  }, [mySavedMovies]);
+
+  React.useEffect(() => {
+    Promise.all([getMovies(), getSavedMovies(token)]).then(
+      ([movies, savedMovies]) => {
+        if (currentUser) {
+          setMySavedMovies(
+            savedMovies.filter((movie) =>
+              movie.owner === currentUser._id ? true : false
+            )
+          );
+          setAllMovies(movies);
+          localStorage.setItem("allMovies", JSON.stringify(movies));
+        }
+      }
+    );
+  }, [currentUser]);
+
+  function likedMoviesCheck(arr) {
+    arr.forEach((movie) => {
+      movie.isLiked = false;
+    });
+    arr.forEach((movie) => {
+      mySavedMovies.forEach((savedMovie) => {
         if (
-          (savedMovie.nameEN &&
-            movie.nameEN &&
-            savedMovie.nameEN === movie.nameEN && 
-            movie._id === currentUser._id) ||
-          (savedMovie.nameRU &&
-            movie.nameRU &&
-            savedMovie.nameRU === movie.nameRU && 
-            movie._id === currentUser._id )
+          (movie.nameEN &&
+            savedMovie.nameEN &&
+            movie.nameEN === savedMovie.nameEN) ||
+          (movie.nameRU &&
+            savedMovie.nameRU &&
+            movie.nameRU === savedMovie.nameRU)
         ) {
           movie.isLiked = true;
           movie._id = savedMovie._id;
-          savedMovie.isLiked = true;
         }
       });
     });
-  }, [moviesToRender, savedMovies]);
+  }
+
+  function isInSavedMovies(item) {
+    let i = false;
+    mySavedMovies.forEach((savedMovie) => {
+      if (
+        item.nameRU === savedMovie.nameRU ||
+        item.nameEN === savedMovie.nameEN
+      ) {
+        return item;
+      }
+    });
+  }
 
   function handleBurgerMenuClick() {
     setBurgerMenuOpen(true);
@@ -155,8 +163,8 @@ function App() {
     if (localStorage.getItem("token")) {
       localStorage.removeItem("token");
       localStorage.removeItem("matchedMovies");
+      localStorage.removeItem("allMovies");
       setMatchedMovies([]);
-      setMoviesToRender([]);
       setLoggedIn(false);
       history.push("/signin");
     }
@@ -178,27 +186,16 @@ function App() {
     }
   }
 
-  function handleMoviesToZero() {
-    return new Promise((resolve, reject) => {
-      moviesToRender.length = 0;
-      matchedMovies.length = 0;
-      resolve(true);
-    });
-  }
-
   function handleSavedMoviesSearch(text) {
     setNothingMatchedSaved(false);
-    console.log(text);
-    const matchedItems = allMovies
-      .filter((movie) => (movie.isLiked ? true : false))
-      .filter((movie) =>
-        (movie.nameRU &&
-          movie.nameRU.toLowerCase().includes(text.toLowerCase())) ||
-        (movie.nameEN &&
-          movie.nameEN.toLowerCase().includes(text.toLowerCase()))
-          ? true
-          : false
-      );
+    setKeyWord(text);
+    const matchedItems = mySavedMovies.filter((movie) =>
+      (movie.nameRU &&
+        movie.nameRU.toLowerCase().includes(text.toLowerCase())) ||
+      (movie.nameEN && movie.nameEN.toLowerCase().includes(text.toLowerCase()))
+        ? true
+        : false
+    );
     if (!matchedItems[0]) {
       setNothingMatchedSaved(true);
     } else {
@@ -206,34 +203,30 @@ function App() {
     }
   }
 
+  function localLikesCheck() {
+    localStorage.removeItem("matchedMovies");
+    localStorage.setItem("matchedMovies", JSON.stringify(matchedMovies));
+  }
+
   function handleMoviesSearch(text) {
-    handleMoviesToZero().then((res) => {
-      setLoaderActive(true);
-      setNewMoviesArr([]);
-      setNothingMatched(false);
-      localStorage.removeItem("matchedMovies");
-      const matchedItems = allMovies.filter((movie) => {
-        if (
-          (movie.nameRU &&
-            movie.nameRU.toLowerCase().includes(text.toLowerCase())) ||
-          (movie.nameEN &&
-            movie.nameEN.toLowerCase().includes(text.toLowerCase()))
-        ) {
-          return true;
-        } else return false;
-      });
-      if (matchedItems.length === 0) {
-        setNothingMatched(true);
-      } else {
-        matchedMovies.forEach((movie) => {
-          matchedMovies.push(movie);
-        });
-        matchedMovies.push(...matchedItems);
-        console.log(matchedMovies);
-        localStorage.setItem("matchedMovies", JSON.stringify(matchedItems));
-        handleMoviesToRender(matchedMovies);
-      }
-    });
+    setLoaderActive(true);
+    matchedMovies.length = 0;
+    setNothingMatched(false);
+    const matchedItems = allMovies.filter(
+      (movie) =>
+        (movie.nameRU &&
+          movie.nameRU.toLowerCase().includes(text.toLowerCase())) ||
+        (movie.nameEN &&
+          movie.nameEN.toLowerCase().includes(text.toLowerCase()))
+    );
+    setMatchedMovies(matchedItems);
+    localStorage.setItem("matchedMovies", JSON.stringify(matchedItems));
+    if (!matchedItems[0]) {
+      setNothingMatched(true);
+    }
+    setTimeout(() => {
+      setLoaderActive(false);
+    }, 500);
   }
 
   function handleCheckboxClick() {
@@ -244,102 +237,7 @@ function App() {
     }
   }
 
-  function likedMoviesCheck(arr1, arr2) {
-    if (!currentUser) {
-      getContent()
-        .then((res) => {
-          setCurrentUser(res);
-        })
-        .then((res) => {
-          likedMoviesCheck(arr1, arr2);
-        });
-    } else {
-      const mySavedMovies = arr2.filter(
-        (movie) => movie.ownerr === currentUser._id
-      );
-      console.log(arr2);
-      arr1.forEach((movie) => {
-        arr2.forEach((savedMovie) => {
-          if (
-            (savedMovie.nameEN &&
-              movie.nameEN &&
-              savedMovie.nameEN === movie.nameEN) ||
-            (savedMovie.nameRU &&
-              movie.nameRU &&
-              savedMovie.nameRU === movie.nameRU)
-          ) {
-            movie.isLiked = true;
-            movie._id = savedMovie._id;
-            savedMovie.isLiked = true;
-          }
-        });
-      });
-    }
-  }
-
-  function handleCardSaveDelCheck() {
-    moviesToRender.forEach((movie) => {
-      savedMovies.forEach((savedMovie) => {
-        if (
-          (savedMovie.nameEN &&
-            movie.nameEN &&
-            !savedMovie.isLiked &&
-            savedMovie.nameEN === movie.nameEN) ||
-          (savedMovie.nameRU &&
-            movie.nameRU &&
-            !savedMovie.isLiked &&
-            savedMovie.nameRU === movie.nameRU)
-        ) {
-          console.log("fuck eah");
-          movie.isLiked = false;
-        }
-      });
-    });
-  }
-
-  function handleMoviesToRender(moviesArr) {
-    console.log(moviesArr, moviesToRender);
-    getSavedMovies(token).then((res) => {
-      likedMoviesCheck(moviesArr, res);
-      if (moviesArr.length <= 3) {
-        setMoreButtonActive(false);
-        moviesToRender.push(...matchedMovies);
-      } else {
-        setMoreButtonActive(true);
-        const newArr = moviesArr.filter((movie) => {
-          if (
-            movie.nameRU === moviesArr[0].nameRU ||
-            movie.nameRU === moviesArr[1].nameRU ||
-            movie.nameRU === moviesArr[2].nameRU
-          ) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        const newMoviesArr = moviesArr.filter((movie) => {
-          if (
-            movie.nameRU === moviesArr[0].nameRU ||
-            movie.nameRU === moviesArr[1].nameRU ||
-            movie.nameRU === moviesArr[2].nameRU
-          ) {
-            return false;
-          } else {
-            return true;
-          }
-        });
-        moviesToRender.push(...newArr);
-        setNewMoviesArr(newMoviesArr);
-      }
-      setLoaderActive(false);
-    });
-  }
-
-  function handleMoreButtonClick() {
-    handleMoviesToRender(newMoviesArr);
-  }
-
-  if (render) {
+  if (true) {
     return (
       <CurrentUserContext.Provider value={currentUser}>
         <div className="app">
@@ -351,31 +249,59 @@ function App() {
               path="/movies"
               loggedIn={loggedIn}
               handleBurgerMenuClick={handleBurgerMenuClick}
-              movies={moviesToRender}
-              savedMovies={savedMovies}
-              setSavedMovies={setSavedMovies}
+              movies={
+                isCheckboxActive
+                  ? matchedMovies.filter((movie) => movie.duration <= 40)
+                  : matchedMovies
+              }
+              savedMovies={mySavedMovies}
+              setSavedMovies={setMySavedMovies}
               handleMoviesSearch={handleMoviesSearch}
               isLoaderActive={isLoaderActive}
               nothingMatched={nothingMatched}
-              isMoreButtonActive={isMoreButtonActive}
-              handleMoreButtonClick={handleMoreButtonClick}
               handleCheckboxClick={handleCheckboxClick}
               isCheckboxActive={isCheckboxActive}
+              setLoaderActive={setLoaderActive}
+              likedMoviesCheck={likedMoviesCheck}
+              localLikesCheck={localLikesCheck}
               component={Movies}
             />
             <ProtectedRoute
               path="/saved-movies"
               loggedIn={loggedIn}
               handleBurgerMenuClick={handleBurgerMenuClick}
-              movies={savedMatchedMovies[0] ? savedMatchedMovies : savedMovies}
-              savedMovies={savedMovies}
-              setSavedMovies={setSavedMovies}
+              // movies={
+              //   savedMatchedMovies[0]
+              //     ? savedMatchedMovies
+              //     : nothingMatchedSaved
+              //     ? nothingMatchedSaved
+              //     : mySavedMovies
+              // }
+              movies={
+                savedMatchedMovies[0]
+                  ? mySavedMovies.filter(
+                      (movie) =>
+                        (movie.nameRU &&
+                          movie.nameRU.toLowerCase().includes(keyWord)) ||
+                        (movie.nameEN &&
+                          movie.nameEN.toLowerCase().includes(keyWord))
+                    )
+                  : nothingMatchedSaved
+                  ? nothingMatchedSaved
+                  : mySavedMovies
+              }
+              savedMatchedMovies={savedMatchedMovies}
+              savedMovies={mySavedMovies}
+              setSavedMatchedMovies={setSavedMatchedMovies}
+              setSavedMovies={setMySavedMovies}
               nothingMatchedSaved={nothingMatchedSaved}
               handleMoviesSearch={handleSavedMoviesSearch}
               handleCheckboxClick={handleCheckboxClick}
               isCheckboxActive={isCheckboxActive}
               noSavedMovies={noSavedMovies}
-              handleCardSaveDelCheck={handleCardSaveDelCheck}
+              likedMoviesCheck={likedMoviesCheck}
+              matchedMovies={matchedMovies}
+              localLikesCheck={localLikesCheck}
               component={SavedMovies}
             />
             <ProtectedRoute
@@ -398,9 +324,6 @@ function App() {
                 isLogInWrong={isLogInWrong}
                 loggedIn={loggedIn}
               />
-            </Route>
-            <Route path="/preloader">
-              <Preloader />
             </Route>
             <Route path="*">
               <NotFound />
