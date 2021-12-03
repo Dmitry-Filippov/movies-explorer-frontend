@@ -27,11 +27,8 @@ function App() {
   const [isBurgerMenuOpened, setBurgerMenuOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [matchedMovies, setMatchedMovies] = React.useState([]);
-  const [moviesToRender, setMoviesToRender] = React.useState([]);
   const [allMovies, setAllMovies] = React.useState([]);
-  const [newMoviesArr, setNewMoviesArr] = React.useState([]);
   const [mySavedMovies, setMySavedMovies] = React.useState([]);
-  const [isMoreButtonActive, setMoreButtonActive] = React.useState(false);
   const [nothingMatched, setNothingMatched] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(null);
   const [isLoaderActive, setLoaderActive] = React.useState(false);
@@ -41,7 +38,6 @@ function App() {
   const [isCheckboxActive, setCheckboxActive] = React.useState(false);
   const [savedMatchedMovies, setSavedMatchedMovies] = React.useState([]);
   const [nothingMatchedSaved, setNothingMatchedSaved] = React.useState(false);
-  const [noSavedMovies, setNoSavedMovies] = React.useState(false);
   const [keyWord, setKeyWord] = React.useState("");
 
   React.useEffect(() => {
@@ -112,18 +108,6 @@ function App() {
           movie._id = savedMovie._id;
         }
       });
-    });
-  }
-
-  function isInSavedMovies(item) {
-    let i = false;
-    mySavedMovies.forEach((savedMovie) => {
-      if (
-        item.nameRU === savedMovie.nameRU ||
-        item.nameEN === savedMovie.nameEN
-      ) {
-        return item;
-      }
     });
   }
 
@@ -270,13 +254,6 @@ function App() {
               path="/saved-movies"
               loggedIn={loggedIn}
               handleBurgerMenuClick={handleBurgerMenuClick}
-              // movies={
-              //   savedMatchedMovies[0]
-              //     ? savedMatchedMovies
-              //     : nothingMatchedSaved
-              //     ? nothingMatchedSaved
-              //     : mySavedMovies
-              // }
               movies={
                 savedMatchedMovies[0]
                   ? mySavedMovies.filter(
@@ -298,7 +275,6 @@ function App() {
               handleMoviesSearch={handleSavedMoviesSearch}
               handleCheckboxClick={handleCheckboxClick}
               isCheckboxActive={isCheckboxActive}
-              noSavedMovies={noSavedMovies}
               likedMoviesCheck={likedMoviesCheck}
               matchedMovies={matchedMovies}
               localLikesCheck={localLikesCheck}
