@@ -4,6 +4,6 @@
 
 ### quick start   
 `npm install`  
-`npm run dev`
+`npm start`
 
 [Ссылка на проект](http://filippov-diploma.nomoredomains.club)
