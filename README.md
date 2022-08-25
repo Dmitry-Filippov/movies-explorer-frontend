@@ -5,6 +5,7 @@
 ### quick start
 Сначала необходимо локально запустить [api](https://github.com/Dmitry-Filippov/movies-explorer-api) проекта,
 затем сделать следующее:
+
 `npm install`  
 `npm start`
 
