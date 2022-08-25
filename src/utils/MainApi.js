@@ -1,4 +1,4 @@
-export const BASE_URL = "http://api.filippov-diploma.nomoredomains.club";
+export const BASE_URL = "http://localhost:4000"
 
 function __getResponseData(res) {
   if (res.ok) {
